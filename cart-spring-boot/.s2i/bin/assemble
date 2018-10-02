@@ -9,13 +9,17 @@ env
 echo "------ /END BUILD INFO ------------"
 
 /usr/local/s2i/assemble
+chmod +x /tmp/src/.s2i/bin/xldeploy
 rc=$?
 
 if [ $rc -eq 0 ]; then
     if [ -n "$APP_VER" ]; then
-        echo "-- Call .s2i/xldeploy --"
-        chmod +x /tmp/src/.s2i/bin/xldeploy
+        echo "-- Call .s2i/xldeploy $APP_VER --"
         /tmp/src/.s2i/bin/xldeploy $APP_VER $XLDEPLOY_URL /tmp/src/xebialabs
+    else
+        DYN_VER=$(echo $OPENSHIFT_BUILD_NAME | awk -F '-' '{print $2}')
+        echo "// Call .s2i/xldeploy $DYN_VER --"
+        /tmp/src/.s2i/bin/xldeploy $DYN_VER $XLDEPLOY_URL /tmp/src/xebialabs
     fi
 else
     echo "After failed assembling $rc"
