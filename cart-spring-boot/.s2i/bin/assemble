@@ -6,6 +6,7 @@ echo $APP_VER
 echo $XLDEPLOY_URL
 pwd
 env
+set
 echo "------ END BUILD INFO ------------"
 
 /usr/local/s2i/assemble
